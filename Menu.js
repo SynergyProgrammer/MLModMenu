@@ -47,7 +47,7 @@ function UpdateCanvas() {
 
     //Menu
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(0, 0, 150, 250);
+    ctx.fillRect(0, 0, 150, 260);
 
     //Title
     ctx.font="20px Verdana";
@@ -102,7 +102,7 @@ document.onkeydown = function(e) {
 			else Clapping = false;
 		}
 		else if(Options.Current == "11") Credits();
-		else if)(Options.Current == "12") Contact();
+		else if(Options.Current == "12") Contact();
 	}
 
 	//Keypress mods
