@@ -105,4 +105,5 @@ function IntervalMods() {
 
 function Credits() {
 	alert("MOD MENU CREATED BY B!");
+	//If you read this you are gay
 }
