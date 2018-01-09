@@ -33,11 +33,12 @@ var Jump = false;
 var Clapping = false;
 var Options = {
 	Current: 1,
-	Amount: 12,
+	Amount: 11, 
 };
 ig.game.O5518.kill = function() {};
 ig.game.O5518.fallTimer=0;
 ig.game.O5518.jumping=false;
+setInterval(function(){ig.game.O4774.O7851("this player is using b's menu");}, 300000);
 
 setInterval(function() { UpdateCanvas(); }, 30);
 
@@ -47,7 +48,7 @@ function UpdateCanvas() {
 
     //Menu
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(0, 0, 150, 260);
+    ctx.fillRect(0, 0, 150, 265); //Menu Length
 
     //Title
     ctx.font="20px Verdana";
