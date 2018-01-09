@@ -1,3 +1,20 @@
+/*
+Please Capitalize Function and Variable names in the format of:
+FunctionName(){}
+Function(){}
+FunctionNameHere(){}
+-------------------------
+Please Also Capitalize The First Letter In Text
+That Appears On The Menu
+This Helps Give A Cleaner Look
+----------------------------
+Any More Notes Here:
+
+
+
+
+*/
+
 //CANVAS SETTINGS
 var canvas = document.createElement('canvas');
 var ctx = canvas.getContext("2d");
@@ -16,7 +33,7 @@ var Jump = false;
 var Clapping = false;
 var Options = {
 	Current: 1,
-	Amount: 10,
+	Amount: 12,
 };
 ig.game.O5518.kill = function() {};
 ig.game.O5518.fallTimer=0;
@@ -39,8 +56,8 @@ function UpdateCanvas() {
 
     //Mods
     ctx.font="12px Verdana";
-    ctx.fillText("jump fly",5,40);
-    ctx.fillText("gravity",5,60);
+    ctx.fillText("Jump Fly",5,40);
+    ctx.fillText("Gravity",5,60);
     ctx.fillText("option03",5,80);
     ctx.fillText("option04",5,100);
     ctx.fillText("option05",5,120);
@@ -48,9 +65,10 @@ function UpdateCanvas() {
     ctx.fillText("option07",5,160);
     ctx.fillText("option08",5,180);
     ctx.fillText("option09",5,200);
-    ctx.fillText("clapping",5,220);
-    ctx.fillText("credits",5,240);
-
+    ctx.fillText("Clapping",5,220);
+    ctx.fillText("Credits",5,240);
+    ctx.fillText("Contact",5,260);
+	
     //Scroller
     ctx.fillStyle = "rgba(0, 191, 255, 0.5)";
     ctx.fillRect(0, Options.Current*20 + 7, 150, 20);
@@ -84,6 +102,7 @@ document.onkeydown = function(e) {
 			else Clapping = false;
 		}
 		else if(Options.Current == "11") Credits();
+		else if)(Options.Current == "12") Contact();
 	}
 
 	//Keypress mods
@@ -106,4 +125,8 @@ function IntervalMods() {
 function Credits() {
 	alert("MOD MENU CREATED BY B!");
 	//If you read this you are gay
+}
+
+function Contact(){
+	alert("Discord Contact Information:\nVibrantChaos#3230\nB.#3980\nr4tb0y#5690");	
 }
