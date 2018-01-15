@@ -1,133 +1,184 @@
-/*
-Please Capitalize Function and Variable names in the format of:
-FunctionName(){}
-Function(){}
-FunctionNameHere(){}
--------------------------
-Please Also Capitalize The First Letter In Text
-That Appears On The Menu
-This Helps Give A Cleaner Look
-----------------------------
-Any More Notes Here:
-
-
-
-
-*/
-
-//CANVAS SETTINGS
 var canvas = document.createElement('canvas');
+var body = document.getElementsByTagName("body")[0].appendChild(canvas);
 var ctx = canvas.getContext("2d");
-canvas.width=ig.ua.viewport.width;
-canvas.height=ig.ua.viewport.height;
 canvas.style.position = "relative";
-canvas.style.border = "0px solid";
-var body = document.getElementsByTagName("body")[0];
-body.appendChild(canvas);
+canvas.width  = ig.ua.viewport.width;
+canvas.height = 200;
+ig.game.O6307.kill = function(){}
 
-alert("WELCOME TO B'S MENU!");
-alert("Controls:\nUP:ARROWUP\nDOWN:ARROWDOWN\nSELECTMOD:CTRL");
-//MENU VARIABLES
-IntervalMods();
-var Jump = false;
-var Clapping = false;
-var Options = {
-	Current: 1,
-	Amount: 11, 
+var menu = {
+	open: false,
+	width: 150,
+	height: 150,
+	opening: false,
+	name: "B'S MENU v1.0",
+	inmenu: 0,
+	onoption: 1
 };
-ig.game.O5518.kill = function() {};
-ig.game.O5518.fallTimer=0;
-ig.game.O5518.jumping=false;
-setInterval(function(){ig.game.O4774.O7851("this player is using b's menu");}, 300000);
 
-setInterval(function() { UpdateCanvas(); }, 30);
+var scroller = {
+	anim: false,
+	width: 150,
+	height: 20
+};
+
+var title = {
+	x: 0,
+	y: 15,
+	size: "15px",
+	font: "Arial Black"
+}
+
+var mods = {
+	gravity: false,
+	noclip: false
+};
+
+setInterval(function() {
+	if(menu.open) UpdateCanvas();
+	if(menu.opening) MenuAnim("open");
+}, 30);
+
+setInterval(function() {
+	if(menu.opening == "complete") {
+		if(menu.name != "B'S MENU v1.0") menu.name = "B'S MENU v1.0";
+		else menu.name = "B'S MENU";
+	}
+}, 500);
 
 function UpdateCanvas() {
-	//Clear Canvas
-	ctx.clearRect(0,0,2000,2000);
-
-    //Menu
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(0, 0, 150, 265); //Menu Length
-
-    //Title
-    ctx.font="20px Verdana";
-    ctx.fillStyle="#FFFFFF";
-    ctx.fillText("B's Menu",25,20);
-
-    //Mods
-    ctx.font="12px Verdana";
-    ctx.fillText("Jump Fly",5,40);
-    ctx.fillText("Gravity",5,60);
-    ctx.fillText("option03",5,80);
-    ctx.fillText("option04",5,100);
-    ctx.fillText("option05",5,120);
-    ctx.fillText("option06",5,140);
-    ctx.fillText("option07",5,160);
-    ctx.fillText("option08",5,180);
-    ctx.fillText("option09",5,200);
-    ctx.fillText("Clapping",5,220);
-    ctx.fillText("Credits",5,240);
-    ctx.fillText("Contact",5,260);
-	
-    //Scroller
-    ctx.fillStyle = "rgba(0, 191, 255, 0.5)";
-    ctx.fillRect(0, Options.Current*20 + 7, 150, 20);
+	ctx.clearRect(0,0, canvas.width,canvas.height);
+	Draw("solid","rgba(0, 0, 0, 0.5)",0,0,menu.width,menu.height);
+	Draw("solid","rgba(135,206,235,.5)",0,menu.onoption*20 + 6.5,scroller.width,scroller.height);
+	Draw("write","rgba(255, 255, 255, 1)",title.x,20,0,0,"15px","Arial Black",menu.name);
+	if(menu.inmenu == 0 && menu.opening == "complete") {
+		Draw("write","rgba(255, 255, 255, 1)",0,40,0,0, "15px","Arial","Main Mods");
+		Draw("write","rgba(255, 255, 255, 1)",0,60,0,0, "15px","Arial","Spamming");
+		Draw("write","rgba(255, 255, 255, 1)",0,80,0,0, "15px","Arial","Bodys");
+		Draw("write","rgba(255, 255, 255, 1)",0,100,0,0,"15px","Arial","Player");
+		Draw("write","rgba(255, 255, 255, 1)",0,120,0,0,"15px","Arial","Misc");
+		Draw("write","rgba(255, 255, 255, 1)",0,140,0,0,"15px","Arial","Credits");
+	}
+	if(menu.inmenu == 1 && menu.opening == "complete") {
+		Draw("write","rgba(255, 255, 255, 1)",0,40,0,0, "15px","Arial","Gravity");
+		Draw("write","rgba(255, 255, 255, 1)",0,60,0,0, "15px","Arial","No-Clip");
+		Draw("write","rgba(255, 255, 255, 1)",0,80,0,0, "15px","Arial","Friction");
+		Draw("write","rgba(255, 255, 255, 1)",0,100,0,0,"15px","Arial","4");
+		Draw("write","rgba(255, 255, 255, 1)",0,120,0,0,"15px","Arial","5");
+		Draw("write","rgba(255, 255, 255, 1)",0,140,0,0,"15px","Arial","Crash Game");
+	}
 }
-
 
 document.onkeydown = function(e) {
-	//Get Keycode
-	var KeyPressed = e.which;
-
-	//Move Scroller
-	if(KeyPressed === 38 && Options.Current > 1) Options.Current--;
-	if(KeyPressed === 40 && Options.Current <= Options.Amount) Options.Current++;
-
-	//Option Selected
-	if(KeyPressed === 17) {
-		if(Options.Current == "1") {
-			if(!Jump) Jump = true;
-			else Jump = false;
+	if(e.which == 27) {
+		if(menu.inmenu == 0) {
+			if(menu.open) MenuActions("close");
+			else if(!menu.open) MenuActions("open");
 		}
-		else if(Options.Current == "2") Gravity();
-		else if(Options.Current == "3") Blank();
-		else if(Options.Current == "4") Blank();
-		else if(Options.Current == "5") Blank();
-		else if(Options.Current == "6") Blank();
-		else if(Options.Current == "7") Blank();
-		else if(Options.Current == "8") Blank();
-		else if(Options.Current == "9") Blank();
-		else if(Options.Current == "10") {
-			if(!Clapping) Clapping = true;
-			else Clapping = false;
+		else
+		{
+			scroller.width = 0;
+			scroller.anim = true;
+			MenuAnim("select");
+			menu.inmenu = 0;
+			menu.onoption = 1;
 		}
-		else if(Options.Current == "11") Credits();
-		else if(Options.Current == "12") Contact();
 	}
-
-	//Keypress mods
-	if(KeyPressed == 32 && Jump) ig.game.O5518.vel.y -= 350;
+	if(menu.open) {
+		if(e.which == 38 && menu.onoption > 1) menu.onoption--;
+		if(e.which == 40 && menu.onoption < 6) menu.onoption++;
+		if(e.which == 17) {
+			scroller.width = 0;
+			scroller.anim = true;
+			MenuAnim("select");
+			if(menu.inmenu == 0) {
+				menu.inmenu = menu.onoption;
+				menu.onoption = 1;
+			}
+			else {
+				CheckMod();
+			}
+		}
+	}
+	if(mods.noclip) {
+		mods.gravity = false;
+		ig.game.gravity = 0;
+		if(e.which == 37) ig.game.O6307.pos.x -= 5;
+		if(e.which == 39) ig.game.O6307.pos.x += 5;
+		if(e.which == 40) ig.game.O6307.pos.y += 5;
+		if(e.which == 38) ig.game.O6307.pos.y -= 5;
+	}
 }
 
-//The Mods
-function Blank() { alert("Nothing is currently set on this option!"); }
-function Gravity() {
-	if(ig.game.gravity != 300) ig.game.gravity = 300;
-	else ig.game.gravity = 800;
-}
-function IntervalMods() {
-	setInterval( function() {
-		if(Clapping) ig.game.O4774.O733(ig.game.O5518.O1040);
-	}, 150);
-}
-
-
-function Credits() {
-	alert("MOD MENU CREATED BY B!");
-	//If you read this you are gay
+function Draw(type, color, x, y, width, height, size, font, text) {
+	if(type == "solid") {
+		ctx.fillStyle = color;
+		ctx.fillRect(x,y,width,height);
+	}
+	if(type == "write") {
+		ctx.fillStyle = color;
+		ctx.font = size + " " + font;
+    	ctx.fillText(text,x,y);
+	}
 }
 
-function Contact(){
-	alert("Discord Contact Information:\nVibrantChaos#3230\nB.#3980\nr4tb0y#5690");	
+function MenuActions(action) {
+	if(action == "close") {
+		ctx.clearRect(0,0, canvas.width,canvas.height);
+		menu.open = false;
+	}
+	if(action == "open") {
+		menu.onoption = 1;
+		menu.open = true;
+		menu.width = 0;
+		title.x = -200;
+		menu.opening = true;
+	}
+}
+
+function MenuAnim(anim) {
+	if(anim == "open") {
+		if(menu.width < 150) menu.width += 10;
+		if(title.x < 5) title.x += 10;
+		else menu.opening = "complete";
+	}
+}
+
+setInterval(function () {
+	if(scroller.anim) {
+		if(scroller.width < 150) scroller.width = scroller.width + 10;
+		else scroller.anim = false;
+	}
+}, 20);
+
+function CheckMod() {
+	if(menu.inmenu != 0) {
+		//gravity
+		if(menu.onoption == 1) {
+			if(!mods.gravity) {
+				mods.gravity = true;
+				ig.game.gravity = 300;
+			}
+			else {
+				mods.gravity = false;
+				ig.game.gravity = 800;
+			}
+		}
+		//noclip
+		if(menu.onoption == 2) {
+			if(!mods.noclip) mods.noclip = true;
+			else {
+				ig.game.gravity = 800; 
+				mods.noclip = false;
+			}
+		}
+		//friction
+		if(menu.onoption == 3) {
+			ig.game.O6307.friction = 0;
+		}
+		//gamecrash
+		if(menu.onoption == 6) {
+			ig.game.O6307.bounciness = Infinity;
+		}
+	}
 }
